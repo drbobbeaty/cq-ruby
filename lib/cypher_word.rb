@@ -5,6 +5,8 @@ class CypherWord
 
   def initialize(cyphertext)
     @cyphertext = cyphertext
+    @cyphertext_chars = cyphertext.chars
+    @cyphertext_uniq_count = cyphertext.chars.to_a.uniq.count
   end
 
   def length
@@ -19,10 +21,9 @@ class CypherWord
   def matches_pattern?(plaintext)
     return false unless @cyphertext && plaintext &&
                         @cyphertext.length == plaintext.length
-    pairs = @cyphertext.chars.zip(plaintext.chars).uniq
-    ctc = pairs.map { |p| p.first }.uniq.count
-    ptc = pairs.map { |p| p.last }.uniq.count
-    (pairs.count == ctc) && (ctc == ptc)
+    pc = @cyphertext_chars.zip(plaintext.chars).uniq.count
+    ptc = plaintext.chars.to_a.uniq.count
+    (pc == @cyphertext_uniq_count) && (@cyphertext_uniq_count == ptc)
   end
 
   # This method will use the provided Legend and map the cyphertext into a
